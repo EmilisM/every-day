@@ -1,0 +1,17 @@
+@using React.AspNet
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	@Html.Raw(ViewBag.ServerStyles)
+	@Html.ReactGetStylePaths()
+</head>
+
+<body>
+	@RenderBody()
+	@Html.ReactGetScriptPaths()
+	@Html.ReactInitJavaScript()
+</body>
+
+</html>
