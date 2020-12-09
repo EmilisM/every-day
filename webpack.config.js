@@ -19,7 +19,7 @@ const manifestPluginOptions = {
 };
 
 module.exports = {
-	entry: './Content/components/expose-components.js',
+	entry: './Content/components/index.js',
 	output: {
 		filename: '[name].[contenthash:8].js',
 		globalObject: 'this',
@@ -48,7 +48,15 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: 'babel-loader',
 			},
+			{
+				test: /\.tsx?$/,
+				exclude: /node_modules/,
+				use: 'ts-loader',
+			},
 		],
+	},
+	resolve: {
+		extensions: [ '.tsx', '.ts', '.js' ],
 	},
 	plugins: [
 		new WebpackManifestPlugin(manifestPluginOptions),
