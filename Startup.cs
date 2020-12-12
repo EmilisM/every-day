@@ -51,7 +51,7 @@ namespace React.Sample.Webpack.CoreMvc
             app.UseRouting();
 
             app.UseEndpoints(endpoints => {
-                endpoints.MapControllerRoute("home", "/", new { controller = "Home", action = "Index" });
+                endpoints.MapControllerRoute("default", "{path?}", new { controller = "Home", action = "Index" });
             });
         }
     }

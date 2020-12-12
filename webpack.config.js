@@ -19,7 +19,7 @@ const manifestPluginOptions = {
 };
 
 module.exports = {
-    entry: './Content/components/index.js',
+    entry: './Content/index.js',
     output: {
         filename: '[name].[contenthash:8].js',
         globalObject: 'this',
