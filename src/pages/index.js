@@ -7,8 +7,8 @@ const template = ({ body }) => {
             <body>
                 <div id="root">${body}</div>
             </body>
-            <script src="/index.js" charset="utf-8"></script>
             <script src="/vendor.js" charset="utf-8"></script>
+            <script src="/index.js" charset="utf-8"></script>
         </html>
     `;
 };
