@@ -39,29 +39,12 @@ namespace image_to_ascii_gen
             SaveToFile(values, directory);
         }
 
-
-        public static Bitmap Downscale(Bitmap source, float targetWidth, float targetHeight)
-        {
-            var tempBitmap = new Bitmap((int)targetWidth, (int)targetHeight);
-
-            using var graphics = Graphics.FromImage(tempBitmap);
-
-            float scale = Math.Min(targetWidth / source.Width, targetHeight / source.Height);
-
-            var scaleWidth = source.Width * scale;
-            var scaleHeight = source.Height * scale;
-
-            graphics.DrawImage(source, (targetWidth - scaleWidth) / 2, (targetHeight - scaleHeight) / 2, scaleWidth, scaleHeight);
-
-            return tempBitmap;
-        }
-
         public static Bitmap BitmapToGrayscale(Bitmap source)
         {
             var width = source.Width;
             var height = source.Height;
 
-            var grayscale = new Bitmap(height, height);
+            var grayscale = new Bitmap(width, height);
 
             using var graphics = Graphics.FromImage(grayscale);
 
@@ -91,19 +74,19 @@ namespace image_to_ascii_gen
 
             var sourceData = source.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, source.PixelFormat);
 
-            var bytes = new byte[source.Height * sourceData.Stride];
+            var bytes = new byte[height * sourceData.Stride];
 
             Marshal.Copy(sourceData.Scan0, bytes, 0, bytes.Length);
 
-            var result = new decimal[width, height];
+            var result = new decimal[height, width];
 
-            for (var y = 0; y < height; ++y)
+            for (var x = 0; x < width; x++)
             {
-                for (var x = 0; x < width; ++x)
+                for (var y = 0; y < height; y++)
                 {
-                    var offset = y * sourceData.Stride + x * 3;
+                    var offset = y * sourceData.Stride + x * 4;
                     var grayScaleByte = (bytes[offset + 0] + bytes[offset + 1] + bytes[offset + 2]) / 3m;
-                    result[x, y] = Math.Round(grayScaleByte / 255m, 2);
+                    result[y, x] = Math.Round(grayScaleByte / 255m, 2);
                 }
             }
 
