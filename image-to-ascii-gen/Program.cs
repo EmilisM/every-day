@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace image_to_ascii_gen
@@ -12,38 +13,37 @@ namespace image_to_ascii_gen
         const float greenWeight = 0.587f;
         const float blueWeight = 0.114f;
 
+        static readonly string[] supportedExtensions = { ".jpg", ".jpeg", ".bmp", ".png" };
+
         public static void Main(string[] args)
         {
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Insufficient params");
-                return;
-            }
+            checkCondition(args.Length == 0, "Insufficient params");
 
             var path = args[0];
             var exists = File.Exists(path);
 
-            if (!exists || !path.ToLower().Contains(".jpg"))
-            {
-                Console.WriteLine("File doesn't exist");
-                return;
-            }
+            checkCondition(!exists, "File doesn't exist");
 
-            var imageBitmap = new Bitmap(path);
+            var extension = Path.GetExtension(path);
+            var isExtensionSupported = supportedExtensions.Any(e => e == extension);
 
-            var grayscaledBitmap = BitmapToGrayscale(imageBitmap);
-            var values = GetPixelGrayscaleValues(grayscaledBitmap);
+            checkCondition(!isExtensionSupported, "File extension is not supported");
+
+            var source = new Bitmap(path);
+
+            var width = source.Width;
+            var height = source.Height;
+
+            var grayscaledBitmap = GrayscaleBitmap(source, width, height);
+            var values = GetPixelValues(grayscaledBitmap, width, height);
 
             var directory = Path.GetDirectoryName(path);
 
             SaveToFile(values, directory);
         }
 
-        public static Bitmap BitmapToGrayscale(Bitmap source)
+        public static Bitmap GrayscaleBitmap(Bitmap source, int width, int height)
         {
-            var width = source.Width;
-            var height = source.Height;
-
             var grayscale = new Bitmap(width, height);
 
             using var graphics = Graphics.FromImage(grayscale);
@@ -67,11 +67,8 @@ namespace image_to_ascii_gen
             return grayscale;
         }
 
-        public static decimal[,] GetPixelGrayscaleValues(Bitmap source)
+        public static decimal[,] GetPixelValues(Bitmap source, int width, int height)
         {
-            var width = source.Width;
-            var height = source.Height;
-
             var sourceData = source.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, source.PixelFormat);
 
             var bytes = new byte[height * sourceData.Stride];
@@ -108,6 +105,15 @@ namespace image_to_ascii_gen
             }
 
             streamWriter.Close();
+        }
+
+        public static void checkCondition(bool condition, string message)
+        {
+            if (condition)
+            {
+                Console.WriteLine(message);
+                Environment.Exit(0);
+            }
         }
     }
 }
