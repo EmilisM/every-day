@@ -85,7 +85,7 @@ namespace image_to_ascii_gen
 
         public static decimal[,] GetPixelValues(Bitmap source, int width, int height)
         {
-            var sourceData = source.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, source.PixelFormat);
+            var sourceData = source.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
 
             var bytes = new byte[height * sourceData.Stride];
 
@@ -97,7 +97,7 @@ namespace image_to_ascii_gen
             {
                 for (var y = 0; y < height; y++)
                 {
-                    var offset = y * sourceData.Stride + x * 4;
+                    var offset = y * sourceData.Stride + x * 3;
                     var grayScaleByte = (bytes[offset + 0] + bytes[offset + 1] + bytes[offset + 2]) / 3m;
                     result[y, x] = Math.Round(grayScaleByte / 255m, 2);
                 }
