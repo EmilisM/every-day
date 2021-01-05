@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace image_to_ascii_gen
+namespace image_to_ascii
 {
     public class Program
     {
