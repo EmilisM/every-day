@@ -8,8 +8,8 @@ namespace _2020
     {
         static void Main(string[] args)
         {
-            _1A();
-            _1B();
+            _2A();
+            _2B();
         }
 
         public static void _1A()
@@ -48,6 +48,56 @@ namespace _2020
                     }
                 }
             }
+        }
+
+        public static void _2A()
+        {
+            var passwordsValid = Read(2).Select(line =>
+            {
+                var lineSplit = line.Split(':');
+
+                var policy = lineSplit[0];
+                var password = lineSplit[1].Trim();
+
+                var policySplit = policy.Split('-');
+                var charSplit = policySplit[1].Split();
+
+                var min = int.Parse(policySplit[0]);
+                var max = int.Parse(charSplit[0]);
+                var character = char.Parse(charSplit[1]);
+
+                var count = password.Count(c => c == character);
+
+                var isValid = min <= count && count <= max;
+
+                return isValid;
+            }).Count(x => x);
+
+
+            System.Console.WriteLine(passwordsValid);
+        }
+
+        public static void _2B()
+        {
+            var passwordsValid = Read(2).Select(line =>
+            {
+                var lineSplit = line.Split(':');
+
+                var policy = lineSplit[0];
+                var password = lineSplit[1].Trim();
+
+                var policySplit = policy.Split('-');
+                var charSplit = policySplit[1].Split();
+
+                var firstIndex = int.Parse(policySplit[0]);
+                var secondIndex = int.Parse(charSplit[0]);
+                var character = char.Parse(charSplit[1]);
+
+                return password[firstIndex - 1] == character ^ password[secondIndex - 1] == character;
+            }).Count(x => x);
+
+
+            System.Console.WriteLine(passwordsValid);
         }
 
         public static string[] Read(int level)
