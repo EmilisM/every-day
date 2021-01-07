@@ -8,8 +8,15 @@ namespace _2020
     {
         static void Main(string[] args)
         {
-            _2A();
-            _2B();
+            _3A();
+            _3B();
+        }
+
+        private static string[] Read(int level)
+        {
+            var path = Path.Join(Environment.CurrentDirectory, $"{level}\\input.txt");
+
+            return File.ReadAllLines(path);
         }
 
         public static void _1A()
@@ -74,7 +81,7 @@ namespace _2020
             }).Count(x => x);
 
 
-            System.Console.WriteLine(passwordsValid);
+            Console.WriteLine(passwordsValid);
         }
 
         public static void _2B()
@@ -97,14 +104,42 @@ namespace _2020
             }).Count(x => x);
 
 
-            System.Console.WriteLine(passwordsValid);
+            Console.WriteLine(passwordsValid);
         }
 
-        public static string[] Read(int level)
+        public static int _3(int right, int down)
         {
-            var path = Path.Join(Environment.CurrentDirectory, $"{level}\\input.txt");
+            var lines = Read(3);
 
-            return File.ReadAllLines(path);
+            int x, y;
+            var treeCount = 0;
+
+            for (y = 0, x = 0; y < lines.Length; y += down, x += right)
+            {
+                if (x >= lines[y].Length)
+                {
+                    x = x - lines[y].Length;
+                }
+
+                if (lines[y][x] == '#')
+                {
+                    treeCount++;
+                }
+            }
+
+            return treeCount;
+        }
+
+        public static void _3A()
+        {
+            System.Console.WriteLine(_3(3, 1));
+        }
+
+        public static void _3B()
+        {
+            var result = _3(1, 1) * _3(3, 1) * _3(5, 1) * _3(7, 1) * _3(1, 2);
+
+            System.Console.WriteLine(result);
         }
     }
 }
