@@ -132,14 +132,14 @@ namespace _2020
 
         public static void _3A()
         {
-            System.Console.WriteLine(_3(3, 1));
+            Console.WriteLine(_3(3, 1));
         }
 
         public static void _3B()
         {
             var result = _3(1, 1) * _3(3, 1) * _3(5, 1) * _3(7, 1) * _3(1, 2);
 
-            System.Console.WriteLine(result);
+            Console.WriteLine(result);
         }
     }
 }
