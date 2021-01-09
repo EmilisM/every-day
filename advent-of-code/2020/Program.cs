@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace _2020
 {
@@ -8,11 +10,10 @@ namespace _2020
     {
         static void Main(string[] args)
         {
-            _3A();
-            _3B();
+            _4A();
         }
 
-        private static string[] Read(int level)
+        private static string[] ReadAllLines(int level)
         {
             var path = Path.Join(Environment.CurrentDirectory, $"{level}\\input.txt");
 
@@ -21,7 +22,7 @@ namespace _2020
 
         public static void _1A()
         {
-            var lines = Read(1).Select(line => int.Parse(line)).ToList();
+            var lines = ReadAllLines(1).Select(line => int.Parse(line)).ToList();
 
 
             for (int i = 0; i < lines.Count; i++)
@@ -39,7 +40,7 @@ namespace _2020
 
         public static void _1B()
         {
-            var lines = Read(1).Select(line => int.Parse(line)).ToList();
+            var lines = ReadAllLines(1).Select(line => int.Parse(line)).ToList();
 
             for (int i = 0; i < lines.Count; i++)
             {
@@ -59,7 +60,7 @@ namespace _2020
 
         public static void _2A()
         {
-            var passwordsValid = Read(2).Select(line =>
+            var passwordsValid = ReadAllLines(2).Select(line =>
             {
                 var lineSplit = line.Split(':');
 
@@ -86,7 +87,7 @@ namespace _2020
 
         public static void _2B()
         {
-            var passwordsValid = Read(2).Select(line =>
+            var passwordsValid = ReadAllLines(2).Select(line =>
             {
                 var lineSplit = line.Split(':');
 
@@ -109,7 +110,7 @@ namespace _2020
 
         public static int _3(int right, int down)
         {
-            var lines = Read(3);
+            var lines = ReadAllLines(3);
 
             int x, y;
             var treeCount = 0;
@@ -140,6 +141,38 @@ namespace _2020
             var result = _3(1, 1) * _3(3, 1) * _3(5, 1) * _3(7, 1) * _3(1, 2);
 
             Console.WriteLine(result);
+        }
+
+        public static void _4A()
+        {
+            var lines = ReadAllLines(4);
+            var passport = new StringBuilder();
+            var validCount = 0;
+
+            for (int i = 0; i <= lines.Length; i++)
+            {
+                if (i == lines.Length || lines[i] == "")
+                {
+                    var passportString = passport.ToString();
+
+                    if (passportString.Contains("byr") &&
+                        passportString.Contains("iyr") &&
+                        passportString.Contains("eyr") &&
+                        passportString.Contains("hgt") &&
+                        passportString.Contains("hcl") &&
+                        passportString.Contains("ecl") &&
+                        passportString.Contains("pid"))
+                    {
+                        validCount++;
+                    }
+
+                    passport.Clear();
+                    continue;
+                }
+                passport.Append($"{lines[i]} ");
+            }
+
+            Console.WriteLine(validCount);
         }
     }
 }
