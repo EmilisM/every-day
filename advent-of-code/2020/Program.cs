@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using _2020_4;
 
 namespace _2020
 {
@@ -7,6 +8,8 @@ namespace _2020
     {
         static void Main(string[] args)
         {
+            _4.A();
+            _4.B();
         }
 
         public static string[] ReadAllLines(int level)
